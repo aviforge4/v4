@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skylite Video Player</title>
+
+    <!-- Video.js Library and Styles -->
+    <link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
+    <link href="video.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.17.0/video.min.js" defer></script>
+
+    <!-- Video.js Quality Levels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-quality-levels@2.1.0/dist/videojs-contrib-quality-levels.min.js" defer></script>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* General Styling for the Body */
+        body {
+            background-color: #fff9f9;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+        }
+
+        /* Video Container Styling */
+        .video-js {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Custom Control Bar Styling */
+        .vjs-control-bar {
+            display: flex !important;
+            height: 50px !important;
+            background-color: rgba(191, 168, 168, 0) !important;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .video-js .vjs-control-bar {
+            display: none;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3em;
+            background-color: #2b333f00;
+            background-color: rgba(43, 51, 63, 0);
+        }
+
+        /* Control bar icon styling */
+        .vjs-control, .vjs-next-button, .vjs-prev-button {
+            font-size: 18px !important;
+            padding: 8px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vjs-resolution-button {
+            font-size: 18px !important;
+            padding: 0; /* No padding to keep the button compact */
+            cursor: pointer;
+            margin: 0; /* Removed any margin that could interfere with positioning */
+            position: absolute !important;
+            top: 5px; /* Position the button close to the top edge */
+            right: 20%; /* Position the button close to the right edge */
+            z-index: 10; /* Ensure the button appears above other elements */
+        }
+
+        .video-js {
+            display: block;
+            vertical-align: top;
+            box-sizing: border-box;
+            color: #fff;
+            background-color: #000;
+            position: relative; /* Ensures that absolutely positioned children are aligned to this container */
+            padding: 0;
+            font-size: 10px;
+            line-height: 1;
+            font-weight: normal;
+            font-style: normal;
+            font-family: Arial, Helvetica, sans-serif;
+            word-break: initial;
+            width: 100% !important;
+            max-width: 100% !important;
+            /* Aspect Ratio (9:16) */
+            padding-top: calc(9 / 16 * 100%) !important; /* 16:9 Aspect ratio */
+            border-radius: 0px !important;
+        }
+
+        /* Make the video itself fill the aspect ratio container */
+        .video-js video {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important; /* Ensures the video covers the area while preserving aspect ratio */
+        }
+
+
+
+        #sub-title-icon {
+            top: 0 !important;
+            right: 0 !important;
+        }
+
+
+        .vjs-picture-in-picture-control {
+            margin-right: 0% !important;
+            right: 5% !important;
+            position: absolute !important;
+            font-size: 18px !important;
+        }
+
+        .video-js .vjs-fullscreen-control {
+            font-size: 18px !important;
+            margin-right: 0px !important;
+            margin-left: auto !important;
+        }
+
+        /* Gear Icon (Resolution) Styling */
+        .vjs-resolution-button i {
+            font-size: 22px !important;
+            color: #ffffff !important;
+            vertical-align: middle;
+        }
+
+        #quality-control-icon,
+        #speed-control-icon {
+            font-size: 22px !important;
+            color: #333 !important;
+            vertical-align: middle;
+        }
+
+
+        #quality-control-icon:hover,
+        #speed-control-icon:hover {
+            color: #ffffff !important;
+        }
+
+        /* Enhanced Dropdown Menu Styling */
+        .vjs-resolution-menu {
+            display: none;
+            position: absolute;
+            background: #f8f9fa;
+            color: black;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border: none;
+            outline: none;
+            z-index: 999;
+            top: -60px;
+            right: 5%;
+            border-radius: 8px;
+            width: 180px;
+            transition: all 0.3s ease;
+        }
+
+        .vjs-resolution-menu li {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s, color 0.3s;
+            color: #181818;
+        }
+
+        .vjs-resolution-menu li:hover {
+            background-color: #ccc;
+            color: #333 !important;
+        }
+
+        .vjs-resolution-menu.active {
+            display: block;
+        }
+
+        /* Enhanced Submenu Styling */
+        /* Separate Styling for Video Speed Menu */
+        #video-speed {
+            display: none;
+            position: absolute;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 0;
+            list-style: none;
+            z-index: 1000;
+            top: -100%;
+            right: 95%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            width: 150px;
+            outline: none;
+            height: auto;
+            overflow-y: auto;
+        }
+
+        #video-speed li {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        #video-speed li:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Separate Styling for Video Quality Menu */
+        #video-quality {
+            display: none;
+            position: absolute;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 0;
+            list-style: none;
+            z-index: 1000;
+            top: -150%;
+            right: 95%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            width: 150px;
+            outline: none;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        #video-quality li {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        #video-quality li:hover {
+            background-color: #f1f1f1;
+        }
+
+
+        /* Display the submenu when the parent item is hovered */
+        .vjs-resolution-menu li:hover #video-quality,
+        .vjs-resolution-menu li:hover #video-speed {
+            display: block;
+        }
+
+        /* Next and Previous Buttons Styling */
+        .vjs-prev-button, .vjs-next-button {
+            position: absolute !important;
+            top: 50%;
+            transform: translateY(-50%) !important;
+            padding: 12px;
+            width: 50px !important;
+            height: 50px !important;
+            color: white !important;
+            font-size: 26px !important;
+            cursor: pointer;
+            z-index: 0 !important;
+            transition: background 0.3s;
+        }
+
+        .vjs-prev-button { left: 15px; }
+        .vjs-next-button { right: 15px; }
+
+        /* Hide these buttons when the user is not interacting with the player */
+        .video-js.vjs-user-inactive .vjs-prev-button,
+        .video-js.vjs-user-inactive .vjs-next-button {
+            display: none;
+        }
+
+        .video-js .vjs-big-play-button {
+            display: none; /* Optional: hide the default big play button */
+        }
+    
+
+        /* Center Play Button Styling */
+        /* Center Play Button Styling */
+        .video-js .vjs-play-control {
+            position: absolute !important; /* Positioning inside the video container */
+            top: 50% !important; /* Center vertically */
+            left: 50% !important; /* Center horizontally */
+            transform: translate(-50%, -50%) !important; /* Exact centering */
+            cursor: pointer; /* Pointer cursor */
+            z-index: 10000; /* Ensure it's above other elements like spinner */
+            display: block; /* Ensure it's always visible */
+            font-size: 30px;
+            color: white;
+            z-index: 0;
+            background: #00b4ff !important;
+            border: 2px solid white;        
+            border: none !important;
+            border-radius: 50%;
+            padding: 10px !important;
+            transition: background 0.3s;
+            width: 50px;
+            height: 50px;
+            display: none !important;
+        }
+        
+        .video-js .vjs-big-play-button {
+            display: none; /* Optional: hide the default big play button */
+        } 
+
+        .vjs-play-control:hover {
+            background: #00b4ff !important;
+        }
+
+        /* Progress Bar Customization */
+        .vjs-progress-holder .vjs-play-progress {
+            background-color: #00b4ff;
+        }
+
+        /* Volume icon styling */
+        .vjs-volume-panel {
+            display: none !important;
+        }
+
+        .video-js .vjs-progress-control {
+            cursor: pointer;
+            flex: auto;
+            display: flex;
+            align-items: center;
+            min-width: 4em;
+            touch-action: none;
+            width: 92% !important;
+            margin-left: 0px !important;
+            left: 0 !important;
+            position: absolute !important;
+            margin-bottom: 5% !important;
+        }
+
+        .vjs-progress-holder {
+            margin-bottom: 5% !important;
+        }
+        
+
+        .video-js .vjs-remaining-time {
+            width: auto;
+            right: 0 !important;
+            position: absolute !important;
+            margin-top: -4% !important;
+        }
+
+        /* Autoplay Toggle Switch Styling */
+        .vjs-autoplay-switch {
+            position: absolute;
+            top: 5%;
+            right: 70px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+            gap: 10px;
+            color: #ffffff;
+        }
+
+        .vjs-autoplay-switch .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px; /* Adjusted width for better balance */
+            height: 24px; /* Adjusted height for better balance */
+        }
+
+        .vjs-autoplay-switch .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .vjs-autoplay-switch .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #888;
+            transition: 0.4s;
+            border-radius: 12px;
+        }
+
+        .vjs-autoplay-switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; /* Adjusted to fit within the slider */
+            width: 18px; /* Adjusted to fit within the slider */
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        .vjs-autoplay-switch input:checked + .slider {
+            background-color: #00b4ff;
+        }
+
+        .vjs-autoplay-switch input:checked + .slider:before {
+            transform: translateX(20px); /* Adjusted to align with new width */
+        }
+
+        .vjs-subtitle-button {
+            display: none !important;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Video Container -->
+    <video id="skylite-video" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="500px"></video>
+
+    <script>
+        function skyliteVideoPlayer(playerId, videoSrc, videoList, adTagUrl) {
+            var player = videojs(playerId, {
+                controls: true,
+                autoplay: false,
+                preload: 'auto',
+                fluid: true,
+                playbackRates: [0.5, 1, 1.5, 2],
+                controlBar: {
+                    volumePanel: true,
+                    fullscreenToggle: true,
+                    playbackRateMenuButton: false
+                },
+            });
+
+            player.on('contextmenu', function(event) {
+                event.preventDefault();
+            });
+
+            player.src({
+                src: videoSrc,
+                type: 'application/x-mpegURL'
+            });
+
+            var resolutionButton = document.createElement('button');
+            resolutionButton.classList.add('vjs-resolution-button', 'vjs-control', 'vjs-button');
+            resolutionButton.innerHTML = '<i class="fas fa-cog"></i>';
+            player.controlBar.el().appendChild(resolutionButton);
+
+            var resolutionMenu = document.createElement('ul');
+            resolutionMenu.classList.add('vjs-resolution-menu');
+            resolutionButton.appendChild(resolutionMenu);
+
+            var speedControlItem = document.createElement('li'); 
+            speedControlItem.innerHTML = '<i id="quality-control-icon" class="fa-solid fa-sliders"></i> Speed Control';
+            var qualityControlItem = document.createElement('li');
+            qualityControlItem.innerHTML = '<i id="speed-control-icon" class="fa-regular fa-circle-play"></i> Quality Control';
+
+            resolutionMenu.appendChild(speedControlItem);
+            resolutionMenu.appendChild(qualityControlItem);
+
+            var speedMenu = document.createElement('ul');
+            speedMenu.classList.add('vjs-submenu');
+            speedMenu.id = 'video-speed';  // Fixed ID for speed menu
+            var speeds = [0.5, 1, 1.5, 2];
+            speeds.forEach(function(speed) {
+                var speedOption = document.createElement('li');
+                speedOption.innerHTML = `${speed}x`;
+                speedOption.dataset.value = speed;
+
+                // Set the initial tick mark on Normal speed (1x)
+                if (speed === 1) {
+                    speedOption.innerHTML = `${speed}x ✓`; // Mark 1x as the default speed
+                }
+
+                speedOption.addEventListener('click', function () {
+                    // Remove tick mark from all options
+                    speedMenu.querySelectorAll('li').forEach(function (item) {
+                        item.innerHTML = item.dataset.value + 'x';
+                    });
+
+                    // Add tick mark to the selected option
+                    speedOption.innerHTML = `${speed}x ✓`;
+
+                    // Set the video playback speed
+                    player.playbackRate(speed);
+                });
+
+                speedMenu.appendChild(speedOption);
+            });
+            speedControlItem.appendChild(speedMenu);
+
+            var qualityMenu = document.createElement('ul');
+            qualityMenu.classList.add('vjs-submenu');
+            qualityMenu.id = 'video-quality';  // Fixed ID for quality menu
+
+            // Add "Auto" quality option
+            var autoQualityOption = document.createElement('li');
+            autoQualityOption.innerHTML = 'Auto';
+            autoQualityOption.dataset.value = 'auto';
+            autoQualityOption.addEventListener('click', function () {
+                // Remove tick mark from all options
+                qualityMenu.querySelectorAll('li').forEach(function (item) {
+                    item.innerHTML = item.dataset.value === 'auto' ? 'Auto' : item.dataset.value + 'p';
+                });
+                // Add tick mark to the selected option
+                autoQualityOption.innerHTML = 'Auto ✓';
+
+                // Enable all quality levels for auto mode
+                var qualityLevels = player.qualityLevels();
+                for (var i = 0; i < qualityLevels.length; i++) {
+                    qualityLevels[i].enabled = true;
+                }
+            });
+            qualityMenu.appendChild(autoQualityOption);
+
+            qualityControlItem.appendChild(qualityMenu);
+
+            var qualityLevels = player.qualityLevels();
+            qualityLevels.on('addqualitylevel', function () {
+                qualityMenu.innerHTML = ''; // Clear the menu and re-add "Auto" option
+                qualityMenu.appendChild(autoQualityOption);
+
+                // Set "Auto" as the default active option with the tick mark initially
+                autoQualityOption.innerHTML = 'Auto ✓';
+
+                for (var i = 0; i < qualityLevels.length; i++) {
+                    let qualityLevel = qualityLevels[i];
+                    let qualityOption = document.createElement('li');
+                    qualityOption.innerHTML = `${qualityLevel.height ? qualityLevel.height + 'p' : 'Auto'}`;
+                    qualityOption.dataset.value = qualityLevel.height ? `${qualityLevel.height}` : 'auto';
+
+                    qualityOption.addEventListener('click', (function (levelIndex) {
+                        return function () {
+                            // Remove tick mark from all options
+                            qualityMenu.querySelectorAll('li').forEach(function (item) {
+                                item.innerHTML = item.dataset.value === 'auto' ? 'Auto' : item.dataset.value + 'p';
+                            });
+
+                            // Add tick mark to the selected option
+                            qualityOption.innerHTML = `${qualityLevel.height}p ✓`;
+
+                            // Enable only the selected quality level
+                            for (var j = 0; j < qualityLevels.length; j++) {
+                                qualityLevels[j].enabled = (j === levelIndex);
+                            }
+                        };
+                    })(i));
+                    qualityMenu.appendChild(qualityOption);
+                }
+            });
+
+
+            resolutionButton.addEventListener('click', function () {
+                resolutionMenu.classList.toggle('active');
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!resolutionButton.contains(event.target)) {
+                    resolutionMenu.classList.remove('active');
+                }
+            });
+            
+
+            var currentVideoIndex = 0;
+            function loadVideoByIndex(index) {
+                if (index >= 0 && index < videoList.length) {
+                    currentVideoIndex = index;
+                    player.src({
+                        src: videoList[index],
+                        type: 'application/x-mpegURL'
+                    });
+                    player.play();
+                }
+            }
+
+            var autoplay = false;
+
+            // Autoplay Toggle Switch
+            var autoplaySwitch = document.createElement('label');
+            autoplaySwitch.classList.add('vjs-autoplay-switch');
+            autoplaySwitch.innerHTML = `
+                <div class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </div>
+            `;
+            autoplaySwitch.style.display = 'none'; // Hide initially
+            player.el().appendChild(autoplaySwitch);
+
+            autoplaySwitch.querySelector('input').addEventListener('change', function (event) {
+                autoplay = event.target.checked;
+            });
+
+            player.on('ended', function () {
+                if (autoplay) {
+                    loadVideoByIndex((currentVideoIndex + 1) % videoList.length);
+                }
+            });
+
+            var prevButton = document.createElement('button');
+            prevButton.classList.add('vjs-prev-button', 'vjs-control', 'vjs-button');
+            prevButton.innerHTML = '<i class="fa-solid fa-backward-step"></i>';
+            player.el().appendChild(prevButton);
+
+            prevButton.addEventListener('click', function () {
+                loadVideoByIndex(currentVideoIndex - 1);
+            });
+
+            var nextButton = document.createElement('button');
+            nextButton.classList.add('vjs-next-button', 'vjs-control', 'vjs-button');
+            nextButton.innerHTML = '<i class="fa-solid fa-forward-step"></i>';
+            player.el().appendChild(nextButton);
+
+            nextButton.addEventListener('click', function () {
+                loadVideoByIndex(currentVideoIndex + 1);
+            });
+
+            var miniPlayerButton = player.controlBar.getChild('PictureInPictureToggle');
+            var fullscreenButton = player.controlBar.getChild('FullscreenToggle');
+
+            if (miniPlayerButton && fullscreenButton) {
+                resolutionButton.after(miniPlayerButton.el());
+                miniPlayerButton.el().after(fullscreenButton.el());
+            }
+
+            loadVideoByIndex(currentVideoIndex);
+
+            // Show autoplay switch when user interacts with the player
+            function showAutoplaySwitch() {
+                autoplaySwitch.style.display = 'block';
+            }
+
+            // Hide autoplay switch when no interaction is detected
+            function hideAutoplaySwitch() {
+                autoplaySwitch.style.display = 'none';
+            }
+
+            // Timeout for hiding autoplay switch after interaction
+            let hideTimeout;
+            function resetHideTimeout() {
+                clearTimeout(hideTimeout);
+                hideTimeout = setTimeout(hideAutoplaySwitch, 3000); // Hide after 3 seconds of inactivity
+            }
+
+            player.on('play', showAutoplaySwitch);
+            player.on('pause', showAutoplaySwitch);
+            player.on('mousemove', function () {
+                showAutoplaySwitch();
+                resetHideTimeout();
+            });
+            player.on('userinactive', hideAutoplaySwitch);
+
+            // Create the subtitle button in the control bar
+            var subtitleButton = document.createElement('button');
+            subtitleButton.classList.add('vjs-subtitle-button', 'vjs-control', 'vjs-button');
+            subtitleButton.innerHTML = '<i id="sub-title-icon" class="fa-regular fa-closed-captioning"></i>'; // Initial icon indicating subtitles are off
+            player.controlBar.el().appendChild(subtitleButton);
+
+            var subtitleTrackLoaded = false; // Flag to track if subtitles are loaded
+
+            // Function to add subtitle tracks to the player
+            function loadSubtitleTrack(label, srcLang, src) {
+                if (!subtitleTrackLoaded) {
+                    player.addRemoteTextTrack({
+                        kind: 'subtitles',
+                        label: label,
+                        srclang: srcLang,
+                        src: src,
+                        default: true
+                    }, false);
+                    subtitleTrackLoaded = true; // Mark that subtitles are now loaded
+                }
+            }
+
+            // Load subtitle tracks when the user clicks the subtitle button for the first time
+            subtitleButton.addEventListener('click', function () {
+                // Lazy load the subtitles on first click to improve initial load performance
+                if (!subtitleTrackLoaded) {
+                    loadSubtitleTrack('English', 'en', 'https://gist.githubusercontent.com/jimzimmerman/776cd9f344cf41691d732c5f13f8abf0/raw/fe6d9124e3e861b879ad711f925ee260acdf5f53/subtitles-en.vtt'); // Sample subtitle file
+                }
+
+                // Toggle subtitles on/off more efficiently
+                var tracks = player.textTracks();
+                for (var i = 0; i < tracks.length; i++) {
+                    if (tracks[i].kind === 'subtitles') {
+                        if (tracks[i].mode === 'showing') {
+                            tracks[i].mode = 'disabled'; // Hide subtitles
+                            subtitleButton.innerHTML = '<i class="fa-regular fa-closed-captioning"></i>'; // Update icon to indicate subtitles are off
+                        } else {
+                            tracks[i].mode = 'showing'; // Show subtitles
+                            subtitleButton.innerHTML = '<i class="fa-solid fa-closed-captioning"></i>'; // Update icon to indicate subtitles are on
+                        }
+                    }
+                }
+            });
+
+
+            // Adding keyboard event listeners for play/pause, forward, and backward
+            document.addEventListener('keydown', function(event) {
+                if (event.target.tagName.toLowerCase() !== 'input' && event.target.tagName.toLowerCase() !== 'textarea') {
+                    switch (event.key) {
+                        case ' ':
+                            event.preventDefault();
+                            if (player.paused()) {
+                                player.play();
+                            } else {
+                                player.pause();
+                            }
+                            break;
+                        case 'ArrowRight':
+                            event.preventDefault();
+                            player.currentTime(player.currentTime() + 10); // Forward 10 seconds
+                            break;
+                        case 'ArrowLeft':
+                            event.preventDefault();
+                            player.currentTime(player.currentTime() - 10); // Backward 10 seconds
+                            break;
+                        case 'n':
+                            event.preventDefault();
+                            loadVideoByIndex(currentVideoIndex + 1); // Next video
+                            break;
+                        case 'p':
+                            event.preventDefault();
+                            loadVideoByIndex(currentVideoIndex - 1); // Previous video
+                            break;
+                    }
+                }
+            });
+
+
+            return player;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var videoList = [
+                'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
+                'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8', // Video with built-in subtitles           
+            ];
+
+            skyliteVideoPlayer('skylite-video', videoList[0], videoList, 'https://example.com/adtag.m3u8');
+        });
+    </script>
+    <script src="touch.js"></script>
+
+</body>
+</html>

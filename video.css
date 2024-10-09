@@ -1,0 +1,606 @@
+@media screen and (max-width: 320px) and (min-width: 240px) {
+    .video-js .vjs-progress-control {
+        cursor: pointer;
+        flex: auto;
+        display: flex;
+        align-items: center;
+        min-width: 4em;
+        touch-action: none;
+        margin-bottom: 10% !important;
+        max-width: 85% !important;
+        margin-left: 0px !important;
+        left: 0 !important;
+        position: absolute !important;
+    }
+
+    .video-js .vjs-time-control {
+        flex: none;
+        font-size: 1em;
+        line-height: 3em;
+        min-width: 2em;
+        width: auto;
+        padding-left: 1em;
+        padding-right: 1em;
+        margin-bottom: 15% !important;
+        margin-right: 0px !important;
+        right: 0 !important;
+        position: absolute !important;
+    } 
+
+    .vjs-remaining-time-display {
+        margin-bottom: 10% !important;
+
+    }
+
+    /* Progress Bar Customization */
+    .vjs-progress-holder .vjs-play-progress {
+        background-color: #00b4ff !important;
+    }
+
+    .video-js .vjs-progress-control {
+        cursor: pointer;
+        flex: auto;
+        display: flex;
+        align-items: center;
+        min-width: 4em;
+        touch-action: none;
+        width: 92% !important;
+        margin-left: 0px !important;
+        left: 0 !important;
+        position: absolute !important;
+    }
+
+    
+
+
+    /* Custom Control Bar Styling */
+    .vjs-control-bar {
+        display: flex !important;
+        justify-content: space-around !important; /* Equal space between buttons */
+        align-items: center !important;
+        height: 40px !important;
+        background-color: rgba(191, 168, 168, 0) !important;
+        border-radius: 0 0 10px 10px;
+        padding: 0 5px;
+    }
+
+    /* Reordering Buttons */
+    .vjs-volume-panel {
+        display: none !important;
+    }
+
+    .vjs-subs-caps-button {
+        position: absolute !important; /* Use absolute positioning to control the exact location */
+        order: -1 !important; /* Change the order value to a negative number */
+        margin-left: 0px !important;
+        left: 0 !important;
+        display: block !important;
+        padding-left: 0px !important;
+    }
+    
+    .vjs-audio-button {
+        display: none !important;
+    }
+
+
+    .vjs-resolution-button {
+        order: 1 !important;
+        margin-right: 5% !important;
+        right: 5% !important;
+        bottom: 0 !important; /* Adjust the value to position it correctly at the bottom */
+        margin-bottom: 0 !important;
+    }
+
+    .vjs-picture-in-picture-control {
+        display: none !important;
+    }
+
+    .vjs-fullscreen-control {
+        position: absolute !important; /* Use absolute positioning to control the exact location */
+        bottom: 0 !important; /* Adjust the value to position it correctly at the bottom */
+        right: 0px; /* Adjust the value to position it correctly at the right */
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+        z-index: 10; /* Ensure it stays above other elements */
+    }
+
+    .vjs-autoplay-switch {
+        position: absolute;
+        top: 1% !important;
+        right: 1% !important;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 18px;
+        gap: 10px;
+        color: #ffffff;
+    }
+
+
+    
+    .video-js .vjs-play-control {
+        position: absolute !important; /* Positioning inside the video container */
+        top: 50% !important; /* Center vertically */
+        left: 50% !important; /* Center horizontally */
+        transform: translate(-50%, -50%) !important; /* Exact centering */
+        cursor: pointer; /* Pointer cursor */
+        z-index: 10000; /* Ensure it's above other elements like spinner */
+        display: block; /* Ensure it's always visible */
+        font-size: 30px;
+        background: #00b3ff00 !important;
+        border: none !important;
+        border-radius: 50%;
+        padding: 10px !important;
+        transition: background 0.3s;
+        display: none !important;
+    }
+
+    .video-js .vjs-play-control:hover {
+        background: #00b3ff00 !important;
+        border: none !important;
+        outline: none !important;
+    }
+    
+    .video-js .vjs-play-control:focus {
+        background: #00b3ff00 !important;
+        border: none !important;
+        outline: none !important;
+    }
+    
+    .video-js .vjs-big-play-button {
+        display: none; /* Optional: hide the default big play button */
+    } 
+
+    #quality-control-icon,
+    #speed-control-icon {
+        font-size: 14px !important; 
+    }
+    .vjs-resolution-menu {
+        position: absolute;
+        right: 0px; 
+        padding: 0px !important;
+        white-space: nowrap !important; 
+        margin-right: 0px !important;
+        justify-content: flex-end !important;
+        z-index: 999; 
+        width: fit-content;
+    }
+    .vjs-resolution-menu li {
+        padding: 6px 8px; 
+        font-size: 13px !important;
+    }
+    #video-speed {
+        width: 120x; 
+        font-size: 12px;
+        height: auto;
+        top: -100%;
+        right: 50%;
+    }
+    #video-quality {
+        width: 120x; 
+        font-size: 12px;
+        height: 100px;
+        top: -100%;
+        right: 50%;
+    }
+    #video-speed li,
+    #video-quality li {
+        padding: 8px 10px; 
+        font-size: 13px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Mobile devices (480px - 767px) */
+@media screen and (min-width: 321px) and (max-width: 480px) {
+   
+    .video-js .vjs-progress-control {
+        cursor: pointer;
+        flex: auto;
+        display: flex;
+        align-items: center;
+        touch-action: none;
+        width: 100vw !important; /* Make sure it takes up the full viewport width */
+        max-width: 100vw !important; /* Ensure the width doesn't get capped */
+        margin: 0 !important; /* Remove any unnecessary margins */
+        left: 0 !important;
+        right: 0 !important;
+        position: absolute !important; /* Ensure it spans the entire container */
+        margin-bottom: 10% !important;
+    }
+
+    .video-js .vjs-time-control {
+        flex: none;
+        font-size: 1em;
+        line-height: 3em;
+        min-width: 2em;
+        width: auto;
+        padding-left: 1em;
+        padding-right: 1em;
+        margin-bottom: 20% !important;
+        margin-right: 0px !important;
+        right: 0 !important;
+        position: absolute !important;
+    } 
+
+    /* Progress Bar Customization */
+    .vjs-progress-holder .vjs-play-progress {
+        background-color: #00b4ff !important;
+        max-width: 100vw !important; /* Make sure it takes up the full viewport width */
+    }
+
+    .video-js .vjs-slider {
+        position: relative;
+        cursor: pointer;
+        padding: 0;
+        margin: 0 0.45em 0 0.45em;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: #73859f;
+        background-color: rgba(115, 133, 159, 0.5);
+        max-width: 100vw !important; /* Make sure it takes up the full viewport width */
+
+    }
+
+
+    /* Custom Control Bar Styling */
+    .vjs-control-bar {
+        display: flex !important;
+        justify-content: space-around !important; /* Equal space between buttons */
+        align-items: center !important;
+        height: 40px !important;
+        background-color: rgba(191, 168, 168, 0) !important;
+        border-radius: 0 0 10px 10px;
+        padding: 0 5px;
+    }
+    /* Reordering Buttons */
+    .vjs-volume-panel {
+        display: none !important;
+    }
+
+    .vjs-subs-caps-button {
+        position: absolute !important; /* Use absolute positioning to control the exact location */
+        order: -1 !important; /* Change the order value to a negative number */
+        margin-left: 0px !important;
+        left: 0 !important;
+        display: block !important;
+        padding-left: 0px !important;
+    }
+    
+    .vjs-audio-button {
+        display: none !important;
+    }
+    
+    .vjs-resolution-button {
+        order: 1 !important;
+        margin-right: 5% !important;
+        right: 5% !important;
+        bottom: 5px !important; /* Adjust the value to position it correctly at the bottom */
+        margin-bottom: 15% !important;
+    }
+
+    .vjs-picture-in-picture-control {
+        display: none !important;
+    }
+
+    .vjs-fullscreen-control {
+        position: absolute !important; /* Use absolute positioning to control the exact location */
+        bottom: 0 !important; /* Adjust the value to position it correctly at the bottom */
+        right: 0px; /* Adjust the value to position it correctly at the right */
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+        z-index: 0; /* Ensure it stays above other elements */
+    }
+
+    .vjs-autoplay-switch {
+        position: absolute;
+        top: 1% !important;
+        right: 1% !important;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 18px;
+        gap: 10px;
+        color: #ffffff;
+    }
+
+    .vjs-autoplay-switch {
+        position: absolute;
+        top: 1% !important;
+        right: 1% !important;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 18px;
+        gap: 10px;
+        color: #ffffff;
+    }
+
+
+    
+    .video-js .vjs-play-control {
+        position: absolute !important; /* Positioning inside the video container */
+        top: 50% !important; /* Center vertically */
+        left: 50% !important; /* Center horizontally */
+        transform: translate(-50%, -50%) !important; /* Exact centering */
+        cursor: pointer; /* Pointer cursor */
+        z-index: 10000; /* Ensure it's above other elements like spinner */
+        display: block; /* Ensure it's always visible */
+        font-size: 30px;
+        color: white;
+        z-index: 0;
+        background: #00b4ff !important;
+        border: 2px solid white;        
+        border: none !important;
+        border-radius: 50%;
+        padding: 10px !important;
+        transition: background 0.3s;
+        display: none !important;
+    }
+    
+    .video-js .vjs-big-play-button {
+        display: none; /* Optional: hide the default big play button */
+    } 
+
+    #quality-control-icon,
+    #speed-control-icon {
+        font-size: 14px !important; 
+    }
+    .vjs-resolution-menu {
+        position: absolute;
+        right: 0 !important; 
+        padding: 0px !important;
+        white-space: nowrap !important; 
+        margin-right: 0px !important;
+        justify-content: flex-end !important;
+        z-index: 999; 
+        width: fit-content;
+    }
+    .vjs-resolution-menu li {
+        padding: 6px 8px; 
+        font-size: 13px !important;
+    }
+    #video-speed {
+        width: 150px !important; 
+        font-size: 12px;
+        height: 100px !important;
+        top: -50% !important;
+        right: 30% !important;
+        z-index: 1001 !important;
+
+    }
+    #video-quality {
+        width: 150px !important; 
+        font-size: 12px;
+        height: 100px !important;
+        top: -50% !important;
+        right: 30% !important;
+        z-index: 1001 !important;
+    }
+    #video-speed li,
+    #video-quality li {
+        padding: 8px 10px; 
+        font-size: 13px;
+    }
+
+    .video-js .vjs-tech {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100% !important;
+    }
+
+    #quality-control-icon,
+    #speed-control-icon {
+        font-size: 18px !important; /* Slightly increase icon size */
+    }
+
+
+    .vjs-menu .vjs-menu-content {
+        display: block;
+        padding: 0px !important;
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        overflow: scroll;
+        height: 100px !important;
+        margin-left: 80px !important;
+        border-radius: 5px !important;
+        bottom: 0 !important;
+    }
+
+
+    .vjs-menu li {
+        list-style: none;
+        margin: 0;
+        padding: 8px !important;
+        line-height: 1.4em;
+        font-size: 13px !important;
+        text-align: center;
+        text-transform: lowercase;
+    }
+
+    .vjs-modal-dialog .vjs-modal-dialog-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        bottom: 0 !important;
+        background-color: #ccc !important;
+        background-color: rgb(108, 110, 113) !important;
+    }
+
+    .vjs-modal-dialog.vjs-text-track-settings {
+        background-color: #ccc !important;
+        background-color: rgb(43, 51, 63) !important;
+        color: #fff;
+        height: 100% !important;
+    }
+
+    .vjs-menu-button-popup .vjs-menu .vjs-menu-content {
+        background-color: #ccc !important;
+        background-color: rgb(43, 51, 63) !important;
+        position: absolute;
+        width: 100%;
+        bottom: 1.5em;
+        max-height: 15em;
+        z-index: 10 !important;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width: 481) and (max-width: 1000px) {
+    #quality-control-icon,
+    #speed-control-icon {
+        font-size: 20px !important; /* Slightly larger icon */
+    }
+
+    .vjs-resolution-menu,
+    #video-speed,
+    #video-quality {
+        width: 160px; /* Adjust dropdown size for tablets */
+        font-size: 14px;
+    }
+
+    .vjs-resolution-menu li,
+    #video-speed li,
+    #video-quality li {
+        padding: 12px 18px;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Small desktops (1024px - 1439px) */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+    #quality-control-icon,
+    #speed-control-icon {
+        font-size: 22px !important; /* Default size */
+    }
+
+    .vjs-resolution-menu,
+    #video-speed,
+    #video-quality {
+        width: 170px;
+        font-size: 14px;
+    }
+
+    .vjs-resolution-menu li,
+    #video-speed li,
+    #video-quality li {
+        padding: 12px 20px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Medium to large desktops (1440px - 1919px) */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    #quality-control-icon,
+    #speed-control-icon {
+        font-size: 24px !important; /* Slightly larger icon size */
+    }
+
+    .vjs-resolution-menu,
+    #video-speed,
+    #video-quality {
+        width: 180px; /* Standard dropdown size */
+        font-size: 15px;
+    }
+
+    .vjs-resolution-menu li,
+    #video-speed li,
+    #video-quality li {
+        padding: 14px 22px;
+    }
+}
+
+/* Large screens (1920px - 2560px) */
+@media screen and (min-width: 1920px) {
+    #quality-control-icon,
+    #speed-control-icon {
+        font-size: 26px !important; /* Larger icon size */
+    }
+
+    .vjs-resolution-menu,
+    #video-speed,
+    #video-quality {
+        width: 200px; /* Increase dropdown size for large screens */
+        font-size: 16px;
+    }
+
+    .vjs-resolution-menu li,
+    #video-speed li,
+    #video-quality li {
+        padding: 16px 24px;
+    }
+}
